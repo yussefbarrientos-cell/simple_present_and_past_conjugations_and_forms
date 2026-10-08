@@ -1,0 +1,684 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Simple Past Irregular Verbs - Audio & Conjugation Lab</title>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg-dark: #0b0f19;
+      --card-bg: rgba(23, 32, 51, 0.75);
+      --card-border: rgba(255, 255, 255, 0.1);
+      --text-main: #f8fafc;
+      --text-muted: #94a3b8;
+      --accent-cyan: #06b6d4;
+      --accent-purple: #a855f7;
+      --accent-green: #10b981;
+      --accent-rose: #f43f5e;
+      --accent-amber: #f59e0b;
+      --glass-glow: 0 8px 32px 0 rgba(0, 0, 0, 0.4);
+      --radius-lg: 16px;
+      --radius-md: 10px;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+    }
+
+    body {
+      background-color: var(--bg-dark);
+      background-image: 
+        radial-gradient(at 0% 0%, rgba(6, 182, 212, 0.15) 0px, transparent 50%),
+        radial-gradient(at 100% 100%, rgba(168, 85, 247, 0.15) 0px, transparent 50%);
+      color: var(--text-main);
+      min-height: 100vh;
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .app-container {
+      width: 100%;
+      max-width: 1050px;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    /* --- HEADER --- */
+    header {
+      background: var(--card-bg);
+      backdrop-filter: blur(12px);
+      border: 1px solid var(--card-border);
+      border-radius: var(--radius-lg);
+      padding: 20px 24px;
+      box-shadow: var(--glass-glow);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 16px;
+    }
+
+    .brand-title h1 {
+      font-size: 1.5rem;
+      font-weight: 800;
+      background: linear-gradient(135deg, var(--accent-cyan), var(--accent-purple));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      letter-spacing: -0.5px;
+    }
+
+    .brand-title p {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      margin-top: 2px;
+    }
+
+    .speed-control {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      background: rgba(255, 255, 255, 0.05);
+      padding: 8px 14px;
+      border-radius: var(--radius-md);
+      border: 1px solid var(--card-border);
+    }
+
+    .speed-control label {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      font-weight: 600;
+    }
+
+    .speed-badge {
+      background: var(--accent-cyan);
+      color: #000;
+      font-weight: 800;
+      padding: 2px 8px;
+      border-radius: 6px;
+      font-size: 0.8rem;
+    }
+
+    /* --- NAVIGATION MODES --- */
+    .mode-nav {
+      display: flex;
+      gap: 10px;
+      background: rgba(15, 23, 42, 0.8);
+      padding: 6px;
+      border-radius: var(--radius-md);
+      border: 1px solid var(--card-border);
+    }
+
+    .nav-tab {
+      flex: 1;
+      padding: 12px;
+      background: transparent;
+      border: none;
+      color: var(--text-muted);
+      font-size: 0.9rem;
+      font-weight: 700;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: all 0.2s;
+      text-align: center;
+    }
+
+    .nav-tab.active {
+      background: linear-gradient(135deg, var(--accent-cyan), #0891b2);
+      color: #fff;
+      box-shadow: 0 4px 12px rgba(6, 182, 212, 0.3);
+    }
+
+    /* --- SEARCH & CATEGORY FILTER --- */
+    .controls-bar {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .search-input {
+      flex: 1;
+      min-width: 200px;
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      padding: 12px 16px;
+      border-radius: var(--radius-md);
+      color: var(--text-main);
+      font-size: 0.95rem;
+      outline: none;
+    }
+
+    .search-input:focus {
+      border-color: var(--accent-cyan);
+    }
+
+    .cat-select {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      padding: 12px 16px;
+      border-radius: var(--radius-md);
+      color: var(--text-main);
+      font-size: 0.9rem;
+      outline: none;
+      cursor: pointer;
+    }
+
+    /* --- VERB LIST / CARDS GRID --- */
+    .verbs-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(310px, 1fr));
+      gap: 16px;
+    }
+
+    .verb-card {
+      background: var(--card-bg);
+      backdrop-filter: blur(12px);
+      border: 1px solid var(--card-border);
+      border-radius: var(--radius-lg);
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      transition: transform 0.2s, border-color 0.2s;
+    }
+
+    .verb-card:hover {
+      transform: translateY(-2px);
+      border-color: rgba(6, 182, 212, 0.4);
+    }
+
+    .verb-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .verb-pair {
+      font-size: 1.25rem;
+      font-weight: 800;
+      color: #fff;
+    }
+
+    .verb-pair .past {
+      color: var(--accent-cyan);
+    }
+
+    .btn-audio {
+      background: rgba(6, 182, 212, 0.15);
+      border: 1px solid rgba(6, 182, 212, 0.3);
+      color: var(--accent-cyan);
+      padding: 6px 12px;
+      border-radius: 8px;
+      font-size: 0.8rem;
+      font-weight: 700;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      transition: all 0.2s;
+    }
+
+    .btn-audio:hover {
+      background: var(--accent-cyan);
+      color: #000;
+    }
+
+    .category-tag {
+      font-size: 0.72rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      color: var(--accent-purple);
+      background: rgba(168, 85, 247, 0.12);
+      padding: 4px 8px;
+      border-radius: 6px;
+      align-self: flex-start;
+    }
+
+    /* Conjugation Contrast Box */
+    .conjugation-box {
+      background: rgba(0, 0, 0, 0.25);
+      border-radius: var(--radius-md);
+      padding: 12px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .conj-row {
+      font-size: 0.85rem;
+      line-height: 1.4;
+    }
+
+    .conj-label {
+      font-size: 0.7rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      margin-bottom: 2px;
+    }
+
+    .conj-present {
+      color: var(--text-muted);
+    }
+
+    .conj-past {
+      color: var(--accent-amber);
+      font-weight: 600;
+    }
+
+    /* Translation Toggle & Context */
+    .translation-area {
+      border-top: 1px dashed var(--card-border);
+      padding-top: 10px;
+    }
+
+    .btn-translate {
+      background: transparent;
+      border: none;
+      color: var(--text-muted);
+      font-size: 0.78rem;
+      font-weight: 600;
+      cursor: pointer;
+      text-decoration: underline;
+      padding: 0;
+    }
+
+    .btn-translate:hover {
+      color: var(--text-main);
+    }
+
+    .translation-content {
+      margin-top: 8px;
+      background: rgba(255, 255, 255, 0.03);
+      padding: 10px;
+      border-radius: 8px;
+      font-size: 0.85rem;
+    }
+
+    .es-trans {
+      font-weight: 700;
+      color: var(--accent-green);
+      margin-bottom: 4px;
+    }
+
+    .example-en {
+      color: var(--text-main);
+      font-style: italic;
+    }
+
+    .example-es {
+      color: var(--text-muted);
+      font-size: 0.8rem;
+    }
+
+    /* PRACTICE QUIZ INTERFACE */
+    .quiz-container {
+      background: var(--card-bg);
+      backdrop-filter: blur(12px);
+      border: 1px solid var(--card-border);
+      border-radius: var(--radius-lg);
+      padding: 30px;
+      box-shadow: var(--glass-glow);
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    .quiz-prompt {
+      font-size: 1.2rem;
+      font-weight: 700;
+      line-height: 1.6;
+    }
+
+    .options-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 10px;
+    }
+
+    .quiz-opt {
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid var(--card-border);
+      color: var(--text-main);
+      padding: 14px 18px;
+      border-radius: var(--radius-md);
+      font-size: 0.95rem;
+      font-weight: 600;
+      cursor: pointer;
+      text-align: left;
+      transition: all 0.2s;
+    }
+
+    .quiz-opt:hover {
+      background: rgba(255, 255, 255, 0.08);
+      border-color: var(--accent-cyan);
+    }
+
+    .quiz-opt.correct {
+      background: rgba(16, 185, 129, 0.2) !important;
+      border-color: var(--accent-green) !important;
+      color: #a7f3d0;
+    }
+
+    .quiz-opt.wrong {
+      background: rgba(244, 63, 94, 0.2) !important;
+      border-color: var(--accent-rose) !important;
+      color: #fecdd3;
+    }
+
+    .hidden {
+      display: none !important;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="app-container">
+    
+    <!-- Header -->
+    <header>
+      <div class="brand-title">
+        <h1>SIMPLE PAST IRREGULAR VERBS</h1>
+        <p>Spoken Contrastive Drills & Form Practice (Speech Rate: 0.8x)</p>
+      </div>
+      <div class="speed-control">
+        <label>Speech Rate:</label>
+        <span class="speed-badge" id="rate-display">0.8x</span>
+      </div>
+    </header>
+
+    <!-- Navigation Tabs -->
+    <nav class="mode-nav">
+      <button class="nav-tab active" id="tab-lab" onclick="switchMode('lab')">VERB LAB & AUDIO DRILLS</button>
+      <button class="nav-tab" id="tab-quiz" onclick="switchMode('quiz')">INTERACTIVE PRACTICE QUIZ</button>
+    </nav>
+
+    <!-- VERB LAB VIEW -->
+    <div id="lab-view" class="app-container">
+      <div class="controls-bar">
+        <input type="text" id="search-bar" class="search-input" placeholder="Search verb (e.g., go, went, drove)..." oninput="filterVerbs()">
+        <select id="cat-filter" class="cat-select" onchange="filterVerbs()">
+          <option value="ALL">All Verb Groups</option>
+          <option value="NO_CHANGE">Verbs with No Change</option>
+          <option value="D_TO_T">Final D Changes to T</option>
+          <option value="VOWEL_CHANGE">Verbs with Vowel Changes</option>
+          <option value="MISC">Miscellaneous Changes</option>
+        </select>
+      </div>
+
+      <div class="verbs-grid" id="verbs-grid"></div>
+    </div>
+
+    <!-- PRACTICE QUIZ VIEW -->
+    <div id="quiz-view" class="quiz-container hidden">
+      <div style="display:flex; justify-content:space-between; align-items:center;">
+        <span class="category-tag" id="quiz-type-tag">AFFIRMATIVE FORM</span>
+        <span style="font-size:0.85rem; color:var(--text-muted);" id="quiz-counter">Question 1</span>
+      </div>
+      <div class="quiz-prompt" id="quiz-prompt">Loading exercise...</div>
+      <div class="options-grid" id="quiz-options"></div>
+      <div id="quiz-feedback"></div>
+      <button class="btn-audio hidden" id="quiz-next-btn" style="align-self:flex-end; padding:12px 24px; font-size:0.9rem;" onclick="nextQuizQuestion()">NEXT QUESTION →</button>
+    </div>
+
+  </div>
+
+  <script>
+    /* --- DATASET: IRREGULAR VERBS WITH EXCLUSIVELY STANDARD PRONOUNS --- */
+    const verbsData = [
+      // Verbs with No Change
+      { simple: "beat", past: "beat", category: "NO_CHANGE", pronoun: "I", es: "golpear / vencer", exampleEn: "I beat my personal running record yesterday.", exampleEs: "Ayer superé mi récord personal de carrera." },
+      { simple: "cost", past: "cost", category: "NO_CHANGE", pronoun: "It", es: "costar", exampleEn: "It cost twenty dollars last week.", exampleEs: "Costó veinte dólares la semana pasada." },
+      { simple: "cut", past: "cut", category: "NO_CHANGE", pronoun: "He", es: "cortar", exampleEn: "He cut the paper with scissors.", exampleEs: "Él cortó el papel con tijeras." },
+      { simple: "hit", past: "hit", category: "NO_CHANGE", pronoun: "They", es: "golpear", exampleEn: "They hit the ball into the field.", exampleEs: "Ellos golpearon la pelota hacia el campo." },
+      { simple: "hurt", past: "hurt", category: "NO_CHANGE", pronoun: "She", es: "doler / lastimar", exampleEn: "She hurt her ankle while running.", exampleEs: "Ella se lastimó el tobillo mientras corría." },
+      { simple: "put", past: "put", category: "NO_CHANGE", pronoun: "We", es: "poner / colocar", exampleEn: "We put the keys on the table.", exampleEs: "Pusimos las llaves sobre la mesa." },
+      { simple: "quit", past: "quit", category: "NO_CHANGE", pronoun: "You", es: "renunciar / dejar", exampleEn: "You quit smoking two years ago.", exampleEs: "Dejaste de fumar hace dos años." },
+      { simple: "shut", past: "shut", category: "NO_CHANGE", pronoun: "They", es: "cerrar", exampleEn: "They shut the door quietly.", exampleEs: "Ellos cerraron la puerta silenciosamente." },
+
+      // Final D Changes to T
+      { simple: "bend", past: "bent", category: "D_TO_T", pronoun: "He", es: "doblar", exampleEn: "He bent the metal rod carefully.", exampleEs: "Él dobló la varilla de metal con cuidado." },
+      { simple: "build", past: "built", category: "D_TO_T", pronoun: "They", es: "construir", exampleEn: "They built a new home near the lake.", exampleEs: "Ellos construyeron una casa nueva cerca del lago." },
+      { simple: "lend", past: "lent", category: "D_TO_T", pronoun: "She", es: "prestar", exampleEn: "She lent me her favorite book.", exampleEs: "Ella me prestó su libro favorito." },
+      { simple: "send", past: "sent", category: "D_TO_T", pronoun: "I", es: "enviar", exampleEn: "I sent an email to the team.", exampleEs: "Envié un correo electrónico al equipo." },
+      { simple: "spend", past: "spent", category: "D_TO_T", pronoun: "We", es: "gastar / pasar tiempo", exampleEn: "We spent three hours at the museum.", exampleEs: "Pasamos tres horas en el museo." },
+
+      // Vowel Changes
+      { simple: "drive", past: "drove", category: "VOWEL_CHANGE", pronoun: "She", es: "conducir / manejar", exampleEn: "She drove to work early this morning.", exampleEs: "Ella manejó al trabajo temprano esta mañana." },
+      { simple: "drink", past: "drank", category: "VOWEL_CHANGE", pronoun: "He", es: "beber", exampleEn: "He drank a full glass of water.", exampleEs: "Él bebió un vaso lleno de agua." },
+      { simple: "eat", past: "ate", category: "VOWEL_CHANGE", pronoun: "We", es: "comer", exampleEn: "We ate breakfast together.", exampleEs: "Comimos el desayuno juntos." },
+      { simple: "write", past: "wrote", category: "VOWEL_CHANGE", pronoun: "I", es: "escribir", exampleEn: "I wrote a letter to my friend.", exampleEs: "Escribí una carta a mi amigo." },
+      { simple: "sleep", past: "slept", category: "VOWEL_CHANGE", pronoun: "They", es: "dormir", exampleEn: "They slept for eight hours.", exampleEs: "Ellos durmieron durante ocho horas." },
+      { simple: "buy", past: "bought", category: "VOWEL_CHANGE", pronoun: "You", es: "comprar", exampleEn: "You bought groceries yesterday.", exampleEs: "Compraste víveres ayer." },
+      { simple: "speak", past: "spoke", category: "VOWEL_CHANGE", pronoun: "She", es: "hablar", exampleEn: "She spoke to the manager.", exampleEs: "Ella habló con el gerente." },
+
+      // Miscellaneous
+      { simple: "go", past: "went", category: "MISC", pronoun: "I", es: "ir", exampleEn: "I went to the supermarket.", exampleEs: "Fui al supermercado." },
+      { simple: "have", past: "had", category: "MISC", pronoun: "We", es: "tener", exampleEn: "We had a great conversation.", exampleEs: "Tuvimos una gran conversación." },
+      { simple: "make", past: "made", category: "MISC", pronoun: "He", es: "hacer / fabricar", exampleEn: "He made a delicious dinner.", exampleEs: "Él hizo una cena deliciosa." },
+      { simple: "see", past: "saw", category: "MISC", pronoun: "They", es: "ver", exampleEn: "They saw a wonderful movie.", exampleEs: "Ellos vieron una película maravillosa." }
+    ];
+
+    // GLOBAL SPEECH RATE (Set to 0.8 as requested)
+    const SPEECH_RATE = 0.8;
+
+    /* --- SPEECH SYNTHESIS FUNCTION --- */
+    function speakText(text) {
+      if (!('speechSynthesis' in window)) return;
+      window.speechSynthesis.cancel(); // Stop any active speech
+      const utterance = new SpeechSynthesisUtterance(text);
+      utterance.rate = SPEECH_RATE;
+      utterance.lang = 'en-US';
+      window.speechSynthesis.speak(utterance);
+    }
+
+    /* --- GENERATE DRILL TEXT BASED ON PRONOUN --- */
+    function getDrillText(v) {
+      const p = v.pronoun;
+      const s = v.simple;
+      const pt = v.past;
+
+      // Auxiliary rules for present vs past
+      const pres3rd = (p === "He" || p === "She" || p === "It");
+      const presAux = pres3rd ? "doesn't" : "don't";
+      const presQ = pres3rd ? "Does" : "Do";
+
+      // Simple present verb form (e.g., drives vs drive)
+      let presVerb = s;
+      if (pres3rd && !s.endsWith("s")) {
+        presVerb = s + "s";
+      }
+
+      const affirmative = `${p} ${presVerb}. ${p} ${pt}.`;
+      const negative = `${p} ${presAux} ${s}. ${p} didn't ${s}.`;
+      const question = `${presQ} ${p.toLowerCase()} ${s}? Did ${p.toLowerCase()} ${s}?`;
+
+      return {
+        affText: affirmative,
+        negText: negative,
+        questText: question,
+        fullDrill: `${p} ${presVerb}, ${p} ${pt}. ${p} ${presAux} ${s}, ${p} didn't ${s}. ${presQ} ${p.toLowerCase()} ${s}? Did ${p.toLowerCase()} ${s}?`
+      };
+    }
+
+    /* --- RENDER VERB LAB CARDS --- */
+    function renderVerbs(items) {
+      const grid = document.getElementById('verbs-grid');
+      grid.innerHTML = '';
+
+      items.forEach((v, idx) => {
+        const drill = getDrillText(v);
+        const card = document.createElement('div');
+        card.className = 'verb-card';
+
+        card.innerHTML = `
+          <div class="verb-header">
+            <div class="verb-pair">${v.simple} → <span class="past">${v.past}</span></div>
+            <button class="btn-audio" onclick="speakText('${v.simple}, ${v.past}')">
+              🔊 Hear Base
+            </button>
+          </div>
+          <span class="category-tag">${v.category.replace('_', ' ')}</span>
+
+          <div class="conjugation-box">
+            <div class="conj-row">
+              <div class="conj-label">Affirmative Drill (+):</div>
+              <span class="conj-present">${drill.affText}</span>
+            </div>
+            <div class="conj-row">
+              <div class="conj-label">Negative Contrast (-):</div>
+              <span class="conj-present">${drill.negText}</span>
+            </div>
+            <div class="conj-row">
+              <div class="conj-label">Question Contrast (?):</div>
+              <span class="conj-past">${drill.questText}</span>
+            </div>
+            <button class="btn-audio" style="margin-top:6px; width:100%; justify-content:center;" onclick="speakText('${drill.fullDrill.replace(/'/g, "\\'")}')">
+              🗣️ Listen to Full Spoken Conjugation
+            </button>
+          </div>
+
+          <div class="translation-area">
+            <button class="btn-translate" onclick="toggleTrans(${idx})">🌐 Show Spanish Translation & Example</button>
+            <div class="translation-content hidden" id="trans-${idx}">
+              <div class="es-trans">Español: ${v.es}</div>
+              <div class="example-en">"${v.exampleEn}"</div>
+              <div class="example-es">"${v.exampleEs}"</div>
+              <button class="btn-audio" style="margin-top:6px;" onclick="speakText('${v.exampleEn.replace(/'/g, "\\'")}')">
+                🔊 Read Example Sentence
+              </button>
+            </div>
+          </div>
+        `;
+        grid.appendChild(card);
+      });
+    }
+
+    function toggleTrans(idx) {
+      const el = document.getElementById(`trans-${idx}`);
+      el.classList.toggle('hidden');
+    }
+
+    function filterVerbs() {
+      const query = document.getElementById('search-bar').value.toLowerCase();
+      const cat = document.getElementById('cat-filter').value;
+
+      const filtered = verbsData.filter(v => {
+        const matchesSearch = v.simple.toLowerCase().includes(query) || v.past.toLowerCase().includes(query);
+        const matchesCat = (cat === 'ALL') || (v.category === cat);
+        return matchesSearch && matchesCat;
+      });
+
+      renderVerbs(filtered);
+    }
+
+    /* --- NAVIGATION & MODE SWITCHING --- */
+    function switchMode(mode) {
+      document.getElementById('tab-lab').classList.toggle('active', mode === 'lab');
+      document.getElementById('tab-quiz').classList.toggle('active', mode === 'quiz');
+
+      document.getElementById('lab-view').classList.toggle('hidden', mode !== 'lab');
+      document.getElementById('quiz-view').classList.toggle('hidden', mode !== 'quiz');
+
+      if (mode === 'quiz') {
+        startQuiz();
+      }
+    }
+
+    /* --- PRACTICE QUIZ SYSTEM --- */
+    let quizQueue = [];
+    let currentQuizIndex = 0;
+
+    function shuffle(array) {
+      return [...array].sort(() => Math.random() - 0.5);
+    }
+
+    function startQuiz() {
+      quizQueue = shuffle(verbsData);
+      currentQuizIndex = 0;
+      renderQuizQuestion();
+    }
+
+    function renderQuizQuestion() {
+      document.getElementById('quiz-feedback').innerHTML = '';
+      document.getElementById('quiz-next-btn').classList.add('hidden');
+
+      const item = quizQueue[currentQuizIndex];
+      const type = Math.floor(Math.random() * 3); // 0: Past form, 1: Negative form, 2: Question form
+
+      let prompt = '';
+      let correctAnswer = '';
+      let options = [];
+      let typeTag = '';
+
+      if (type === 0) {
+        typeTag = "AFFIRMATIVE PAST FORM";
+        prompt = `Yesterday, ${item.pronoun} ______ (${item.simple}) to the store.`;
+        correctAnswer = item.past;
+        options = [item.past, item.simple, item.simple + "ed", item.past + "ed"].filter((v, i, a) => a.indexOf(v) === i);
+      } else if (type === 1) {
+        typeTag = "NEGATIVE AUXILIARY DRILL";
+        prompt = `${item.pronoun} didn't ______ (${item.simple}) yesterday.`;
+        correctAnswer = item.simple;
+        options = [item.simple, item.past, "don't " + item.simple, "didn't " + item.past];
+      } else {
+        typeTag = "QUESTION AUXILIARY DRILL";
+        prompt = `______ ${item.pronoun.toLowerCase()} ______ (${item.simple}) last night?`;
+        correctAnswer = `Did / ${item.simple}`;
+        options = [`Did / ${item.simple}`, `Did / ${item.past}`, `Does / ${item.simple}`, `Do / ${item.past}`];
+      }
+
+      while (options.length < 3) {
+        options.push("doesn't " + item.simple);
+      }
+
+      document.getElementById('quiz-type-tag').textContent = typeTag;
+      document.getElementById('quiz-counter').textContent = `Question ${currentQuizIndex + 1} of ${quizQueue.length}`;
+      document.getElementById('quiz-prompt').innerHTML = prompt;
+
+      const optionsGrid = document.getElementById('quiz-options');
+      optionsGrid.innerHTML = '';
+
+      shuffle(options).forEach(opt => {
+        const btn = document.createElement('button');
+        btn.className = 'quiz-opt';
+        btn.textContent = opt;
+        btn.onclick = () => checkQuizAnswer(opt, correctAnswer, item);
+        optionsGrid.appendChild(btn);
+      });
+    }
+
+    function checkQuizAnswer(selected, correct, item) {
+      const allOpts = document.querySelectorAll('.quiz-opt');
+      allOpts.forEach(b => b.style.pointerEvents = 'none');
+
+      const isCorrect = (selected === correct);
+      if (isCorrect) {
+        speakText(`Correct! ${item.pronoun} ${item.past}`);
+        document.getElementById('quiz-feedback').innerHTML = `<div style="color:var(--accent-green); font-weight:700;">✓ Great job! Excellent grammar structure.</div>`;
+      } else {
+        speakText(`Notice the rule: ${item.simple}, ${item.past}`);
+        document.getElementById('quiz-feedback').innerHTML = `<div style="color:var(--accent-rose); font-weight:700;">✗ Correct form: "${correct}". Remember: use base form after didn't/did.</div>`;
+      }
+
+      document.getElementById('quiz-next-btn').classList.remove('hidden');
+    }
+
+    function nextQuizQuestion() {
+      currentQuizIndex = (currentQuizIndex + 1) % quizQueue.length;
+      renderQuizQuestion();
+    }
+
+    // Initial Load
+    window.addEventListener('load', () => {
+      renderVerbs(verbsData);
+    });
+  </script>
+</body>
+</html>
